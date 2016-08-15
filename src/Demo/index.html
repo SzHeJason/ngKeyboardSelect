@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="test">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <script src="../lib/angular/angular.min.js"></script>
+    <script src="app.js"></script>
+    <script src="../js/ng-keybord-select.js"></script>
+</head>
+
+<body>
+    <div ng-controller="TestCtrl as vm">
+        <h3>像电脑系统一样，shift连续选择，ctrl批量选择，点击单选</h3>
+        <ul grid-group grid-select="isSelected">
+            <li grid-selected="item" ng-repeat="item in vm.data">
+                {{item.name}}
+            </li>
+        </ul>
+        <div>
+            <pre>
+                {{vm.data |json}}
+            </pre>
+        </div>
+
+        <h3>添加checkbox?通过ng-model-options debounces实现</h3>
+        <ul grid-group grid-select="isSelected">
+            <li grid-selected="item" ng-repeat="item in vm.data">
+                <input ng-model="item.isSelected" ng-model-options="{debounce : {'default': 500}}" type="checkbox"> {{item.name}}
+            </li>
+        </ul>
+        <pre>
+            {{vm.data |json}}
+        </pre>
+    </div>
+
+</body>
+
+</html>
