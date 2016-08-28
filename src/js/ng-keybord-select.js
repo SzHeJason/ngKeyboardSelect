@@ -3,7 +3,7 @@
      .directive('gridGroup', [function() {
          return {
              scope: {
-                 gridSelect: '@',
+                 gridSelectName: '@',
              },
              bindToController: true,
              controllerAs: "vm",
@@ -17,9 +17,10 @@
                  vm.Items = [];
                  vm.itemName = "item";
                  vm.addItem = function(item) {
-                     item.index = index ++;
+                     item.index = index++;
                      vm.Items.push(item);
                  }
+                 //shfit 批量选择
                  vm.mulitSelectItem = function(item) {
                      nowIndex = item.index;
                      pushNum = Math.abs(nowIndex - preIndex);
@@ -37,19 +38,20 @@
                          }
                      })
                  }
+                 //ctrl 多选
                  vm.selectItem = function(item) {
                      item.isSelected = !!!item.isSelected;
                      preIndex = item.index;
                  }
+                 //单选
                  vm.selectSingleItem = function(item) {
-                     item[vm.gridSelect] = !!!item[vm.gridSelect];
+                     item[vm.gridSelectName] = !!!item[vm.gridSelectName];
                      angular.forEach(vm.Items, function(value, key) {
-                         if (item[vm.gridSelect] && item.$$hashKey != value.$$hashKey) {
-                             value[vm.gridSelect] = false;
-                         }else{
-                             preIndex = key;
+                         if (value[vm.gridSelectName] && item.$$hashKey != value.$$hashKey) {
+                             value[vm.gridSelectName] = false;
                          }
                      })
+                     preIndex = item.index;
                  }
                  return vm;
              }],
@@ -64,18 +66,51 @@
              require: '^gridGroup',
              link: function(scope, ele, attrs, ctrls) {
                  var item = scope[attrs.gridSelected]
-                 ctrls.addItem(item)
-                 ele.on('click', function(e) {
-                     scope.$apply(function() {
-                         if (e.ctrlKey || e.metaKey) {
-                             ctrls.selectItem(item);
-                         } else if (e.shiftKey) {
-                             ctrls.mulitSelectItem(item);
-                         } else {
-                             ctrls.selectSingleItem(item);
+                 var itemDisabled = scope[attrs.gridSelectedDisabled];
+                 var result;
+                 //获取选中的数据
+                 var getSelectedItems = function() {
+                     result = [];
+                     for (var i in ctrls.Items) {
+                         if (ctrls.Items[i][ctrls['gridSelectName']]) {
+                             result.push(ctrls.Items[i]);
                          }
-                     });
-                 })
+                     }
+                     return result;
+                 }
+                 ctrls.addItem(item)
+                 if (!itemDisabled) {
+                     ele.on('click', function(e) {
+                         scope.$apply(function() {
+                             result = getSelectedItems()                             
+                             scope.$emit('selectStart', result)
+                             if (e.ctrlKey || e.metaKey) {
+                                 ctrls.selectItem(item);
+                             } else if (e.shiftKey) {
+                                 ctrls.mulitSelectItem(item);
+                             } else {
+                                 ctrls.selectSingleItem(item);
+                             }
+                             result = getSelectedItems()                             
+                             scope.$emit('selectEnd', result)
+                         });
+                     })
+                 }
+             }
+         }
+     }])
+     .factory('MulitGrid', ['$rootScope', function($rootScope) {
+         var selectItems = [];
+         var itemsLength = "";
+         $rootScope.$on('selectEnd', function(event, data) {
+             selectItems = data;
+         })
+         return {
+             getSelectItems: function() {
+                 return selectItems;
+             },
+             getItemsLength: function() {
+                 return selectItems.length;
              }
          }
      }])

@@ -4,16 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
+    <style>
+        .active {
+            border: 1px solid #3934f8;
+        }
+    </style>
     <script src="../lib/angular/angular.min.js"></script>
-    <script src="app.js"></script>
     <script src="../js/ng-keybord-select.js"></script>
+    <script>
+        angular.module('test', ['ng-keybord-select'])
+            .controller('TestCtrl', function(MulitGrid, $scope, $filter) {
+                var vm = this;
+                vm.data = [{
+                    name: "张三"
+                }, {
+                    name: "张三"
+                }, {
+                    name: "张三"
+                }, {
+                    name: "张三"
+                }, {
+                    name: "张三"
+                }, {
+                    name: "张三"
+                }]
+
+                vm.checkBoxData = [{
+                    name: "李四"
+                }, {
+                    name: "李四"
+                }, {
+                    name: "李四"
+                }, {
+                    name: "李四"
+                }, {
+                    name: "李四"
+                }, {
+                    name: "李四"
+                }]
+                vm.getSelectItemsLength = function() {
+                    console.log(MulitGrid.getSelectItems());
+                }
+                vm.getSelectItems = function() {
+                    console.log(MulitGrid.getItemsLength());
+                }
+
+                //listen selectEnd
+                $scope.$on('selectEnd', function(event, res) {
+                    console.log(res);
+                })
+                $scope.$on('selectStart', function(event, res) {
+                    console.log(res);
+                })
+                vm.date = [{
+                    id: 1,
+                    day: "2016-10-05"
+                }, {
+                    id: 2,
+                    day: "2016-10-04"
+                }, {
+                    id: 3,
+                    day: "2016-10-04"
+                }]
+                return this;
+            })
+    </script>
 </head>
 
-<body>
-    <div ng-controller="TestCtrl as vm">
+<body ng-controller="TestCtrl as vm">
+    <div>
         <h3>像电脑系统一样，shift连续选择，ctrl批量选择，点击单选</h3>
-        <ul grid-group grid-select="isSelected">
-            <li grid-selected="item" ng-repeat="item in vm.data">
+        <ul grid-group grid-select-name="isSelected">
+            <li grid-selected="item" ng-class="{'active':item.isSelected}" ng-repeat="item in vm.data">
                 {{item.name}}
             </li>
         </ul>
@@ -24,16 +86,18 @@
         </div>
 
         <h3>添加checkbox?通过ng-model-options debounces实现</h3>
-        <ul grid-group grid-select="isSelected">
-            <li grid-selected="item" ng-repeat="item in vm.data">
-                <input ng-model="item.isSelected" ng-model-options="{debounce : {'default': 500}}" type="checkbox"> {{item.name}}
+        <ul grid-group grid-select-name="isSelected">
+            <li grid-selected="item" ng-repeat="item in vm.checkBoxData">
+                <input ng-model="item.isSelected" ng-model-options="{debounce : {'default': 300}}" type="checkbox"> {{item.name}}
             </li>
         </ul>
         <pre>
-            {{vm.data |json}}
+            {{vm.checkBoxData |json}}
         </pre>
     </div>
-
+    <h3>如何获取选中的数据信息？MulitGrid服务提供</h3>
+    <button style="padding:10px;" ng-click="vm.getSelectItems()">getSelectItems</button>
+    <button style="padding:10px;" ng-click="vm.getSelectItemsLength()">getSelectItemLength</button>
 </body>
 
 </html>
