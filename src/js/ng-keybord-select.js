@@ -4,6 +4,7 @@
          return {
              scope: {
                  gridSelectName: '@',
+                 gridGroupData: "=",
              },
              bindToController: true,
              controllerAs: "vm",
@@ -17,33 +18,33 @@
                  vm.Items = [];
                  vm.itemName = "item";
                  vm.addItem = function(item) {
-                     item.index = index++;
-                     vm.Items.push(item);
-                 }
-                 //shfit 批量选择
+                         item.index = index++;
+                         vm.Items.push(item);
+                     }
+                     //shfit 批量选择
                  vm.mulitSelectItem = function(item) {
-                     nowIndex = item.index;
-                     pushNum = Math.abs(nowIndex - preIndex);
-                     angular.forEach(vm.Items, function(value, key) {
-                         if (nowIndex > preIndex) {
-                             //向下选择,向上处理
-                             for (preIndex; preIndex < nowIndex; preIndex++) {
-                                 vm.Items[preIndex + 1].isSelected = true
+                         nowIndex = item.index;
+                         pushNum = Math.abs(nowIndex - preIndex);
+                         angular.forEach(vm.Items, function(value, key) {
+                             if (nowIndex > preIndex) {
+                                 //向下选择,向上处理
+                                 for (preIndex; preIndex < nowIndex; preIndex++) {
+                                     vm.Items[preIndex + 1].isSelected = true
+                                 }
+                             } else if (nowIndex < preIndex) {
+                                 //向上选择,向下处理
+                                 for (preIndex; preIndex > nowIndex; preIndex--) {
+                                     vm.Items[preIndex - 1].isSelected = true
+                                 }
                              }
-                         } else if (nowIndex < preIndex) {
-                             //向上选择,向下处理
-                             for (preIndex; preIndex > nowIndex; preIndex--) {
-                                 vm.Items[preIndex - 1].isSelected = true
-                             }
-                         }
-                     })
-                 }
-                 //ctrl 多选
+                         })
+                     }
+                     //ctrl 多选
                  vm.selectItem = function(item) {
-                     item.isSelected = !!!item.isSelected;
-                     preIndex = item.index;
-                 }
-                 //单选
+                         item.isSelected = !!!item.isSelected;
+                         preIndex = item.index;
+                     }
+                     //单选
                  vm.selectSingleItem = function(item) {
                      item[vm.gridSelectName] = !!!item[vm.gridSelectName];
                      angular.forEach(vm.Items, function(value, key) {
@@ -54,10 +55,7 @@
                      preIndex = item.index;
                  }
                  return vm;
-             }],
-             link: function(scope, ele, attrs, ctrls) {
-
-             }
+             }]
          }
      }])
      //grid多选功能实现，item容器
@@ -82,8 +80,6 @@
                  if (!itemDisabled) {
                      ele.on('click', function(e) {
                          scope.$apply(function() {
-                             result = getSelectedItems()                             
-                             scope.$emit('selectStart', result)
                              if (e.ctrlKey || e.metaKey) {
                                  ctrls.selectItem(item);
                              } else if (e.shiftKey) {
@@ -91,26 +87,11 @@
                              } else {
                                  ctrls.selectSingleItem(item);
                              }
-                             result = getSelectedItems()                             
-                             scope.$emit('selectEnd', result)
+                             result = getSelectedItems();
+                             ctrls.gridGroupData = result;
                          });
                      })
                  }
-             }
-         }
-     }])
-     .factory('MulitGrid', ['$rootScope', function($rootScope) {
-         var selectItems = [];
-         var itemsLength = "";
-         $rootScope.$on('selectEnd', function(event, data) {
-             selectItems = data;
-         })
-         return {
-             getSelectItems: function() {
-                 return selectItems;
-             },
-             getItemsLength: function() {
-                 return selectItems.length;
              }
          }
      }])

@@ -11,64 +11,7 @@
     </style>
     <script src="../lib/angular/angular.min.js"></script>
     <script src="../js/ng-keybord-select.js"></script>
-    <script>
-        angular.module('test', ['ng-keybord-select'])
-            .controller('TestCtrl', function(MulitGrid, $scope, $filter) {
-                var vm = this;
-                vm.data = [{
-                    name: "张三"
-                }, {
-                    name: "张三"
-                }, {
-                    name: "张三"
-                }, {
-                    name: "张三"
-                }, {
-                    name: "张三"
-                }, {
-                    name: "张三"
-                }]
-
-                vm.checkBoxData = [{
-                    name: "李四"
-                }, {
-                    name: "李四"
-                }, {
-                    name: "李四"
-                }, {
-                    name: "李四"
-                }, {
-                    name: "李四"
-                }, {
-                    name: "李四"
-                }]
-                vm.getSelectItemsLength = function() {
-                    console.log(MulitGrid.getSelectItems());
-                }
-                vm.getSelectItems = function() {
-                    console.log(MulitGrid.getItemsLength());
-                }
-
-                //listen selectEnd
-                $scope.$on('selectEnd', function(event, res) {
-                    console.log(res);
-                })
-                $scope.$on('selectStart', function(event, res) {
-                    console.log(res);
-                })
-                vm.date = [{
-                    id: 1,
-                    day: "2016-10-05"
-                }, {
-                    id: 2,
-                    day: "2016-10-04"
-                }, {
-                    id: 3,
-                    day: "2016-10-04"
-                }]
-                return this;
-            })
-    </script>
+    <script src="app.js"></script>
 </head>
 
 <body ng-controller="TestCtrl as vm">
@@ -79,11 +22,10 @@
                 {{item.name}}
             </li>
         </ul>
-        <div>
-            <pre>
-                {{vm.data |json}}
-            </pre>
-        </div>
+        <pre>
+        
+            {{vm.data | json}}
+        </pre>
 
         <h3>添加checkbox?通过ng-model-options debounces实现</h3>
         <ul grid-group grid-select-name="isSelected">
@@ -94,10 +36,20 @@
         <pre>
             {{vm.checkBoxData |json}}
         </pre>
+
+        <h3>如何获取选中的数据？</h3>
+        <ul grid-group grid-group-data="vm.selectedData" grid-select-name="isSelected">
+            <li grid-selected="item" ng-repeat="item in vm.selectData">
+                <input ng-model="item.isSelected" ng-model-options="{debounce : {'default': 300}}" type="checkbox"> {{item.name}}
+            </li>
+        </ul>
+        <pre>
+            <h3>select Item :</h3>  
+            {{vm.selectData |json}}
+            <h3>selected Item : </h3>
+            {{vm.selectedData |json}}
+        </pre>
     </div>
-    <h3>如何获取选中的数据信息？MulitGrid服务提供</h3>
-    <button style="padding:10px;" ng-click="vm.getSelectItems()">getSelectItems</button>
-    <button style="padding:10px;" ng-click="vm.getSelectItemsLength()">getSelectItemLength</button>
 </body>
 
 </html>
