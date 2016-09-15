@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/SzHeJason/ng-keybord-select#readme",
   "devDependencies": {
-    "bower": "^1.7.9"
+    "bower": "^1.7.9",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0"
   }
 }

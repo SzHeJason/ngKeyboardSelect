@@ -37,8 +37,11 @@
             {{vm.checkBoxData |json}}
         </pre>
 
-        <h3>如何获取选中的数据？</h3>
+        <h3 ng-init="vm.isCheck = false">如何获取选中的数据？</h3>
         <ul grid-group grid-group-data="vm.selectedData" grid-select-name="isSelected">
+            <li>
+                <input grid-check-all ng-model="vm.isCheck" type="checkbox">全选(select-all)
+            </li>
             <li grid-selected="item" ng-repeat="item in vm.selectData">
                 <input ng-model="item.isSelected" ng-model-options="{debounce : {'default': 300}}" type="checkbox"> {{item.name}}
             </li>
