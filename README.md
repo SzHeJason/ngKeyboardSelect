@@ -10,6 +10,12 @@ ________
 * 删除了Event和services,刚开始设计的时候是时候广播事件，来处理选中状态的，但是后来发现这样处理会导致同一页面下不能由多个组件，也就是组件不能独立，所以使用grid-group-data来获取选中的数据
 * 加上全选功能(gridCheckAll)
 
+### Bower
+--------
+```
+    bower install --save-dev ng-keybord-select
+```
+
 ### Usage
 -------
 ```html
