@@ -66,23 +66,64 @@ angular.module('ng-keybord-select', [])
                 var ngModelCtrl = ctrls[1];
                 var isCheck = ngModelCtrl.$viewValue;
                 var getSelectItem = function () {
-                    $timeout(function () {
-                        isCheck = ngModelCtrl.$viewValue
-                        if (isCheck) {
-                            for (var i in gridGroupCtrl.Items) {
-                                gridGroupCtrl.Items[i][gridGroupCtrl.gridSelectName] = true;
+//grid多选的组别
+    .directive('gridGroup', [function () {
+        return {
+            scope: {
+                gridSelectName: '@',
+            },
+            bindToController: true,
+            controllerAs: "vm",
+            controller: ['$element', '$attrs', function (ele, attrs) {
+                var vm = this;
+                var preIndex;
+                var pushNum;
+                var nowIndex;
+                var itemName;
+                var index = 0;
+                vm.Items = [];
+                vm.itemName = "item";
+                vm.addItem = function (item) {
+                    item.index = index++;
+                    vm.Items.push(item);
+                }
+                vm.mulitSelectItem = function (item) {
+                    nowIndex = item.index;
+                    pushNum = Math.abs(nowIndex - preIndex);
+                    angular.forEach(vm.Items, function (value, key) {
+                        if (nowIndex > preIndex) {
+                            //向下选择,向上处理
+                            for (preIndex; preIndex < nowIndex; preIndex++) {
+                                vm.Items[preIndex + 1].isSelected = true
                             }
-                        } else {
-                            for (var i in gridGroupCtrl.Items) {
-                                gridGroupCtrl.Items[i][gridGroupCtrl.gridSelectName] = false;
+                        } else if (nowIndex < preIndex) {
+                            //向上选择,向下处理
+                            for (preIndex; preIndex > nowIndex; preIndex--) {
+                                vm.Items[preIndex - 1].isSelected = true
                             }
                         }
-                    });
+                    })
                 }
-                getSelectItem();
-                ele.on('click', function () {
-                    getSelectItem();
-                })
+                vm.selectItem = function (item) {
+                    item.isSelected = !!!item.isSelected;
+                    preIndex = item.index;
+                }
+                vm.selectSingleItem = function (item, e) {
+                    if (e.target.type !== "checkbox") {
+                        item[vm.gridSelectName] = !!!item[vm.gridSelectName];
+                        angular.forEach(vm.Items, function (value, key) {
+                            if (value[vm.gridSelectName] && item.id != value.id) {
+                                value[vm.gridSelectName] = false;
+                            }
+                        })
+                    }
+                    preIndex = item.index;
+
+                }
+                return vm;
+            }],
+            link: function (scope, ele, attrs, ctrls) {
+
             }
         }
     }])
@@ -92,13 +133,15 @@ angular.module('ng-keybord-select', [])
             require: '^gridGroup',
             link: function (scope, ele, attrs, ctrls) {
                 var item = scope[attrs.gridSelected]
-                var itemDisabled = scope[attrs.gridSelectedDisabled];
+                var itemDisabled = scope[attrs.gridSelectedDisabled] || attrs.gridSelectedDisabled;
+                if (ngIsStr(itemDisabled)) {
+                    itemDisabled = itemDisabled == "true" ? true : false;
+                }
                 var result;
-                //获取选中的数据
                 var getSelectedItems = function () {
                     result = [];
                     for (var i in ctrls.Items) {
-                        if (ctrls.Items[i][ctrls['gridSelectName']]) {
+                        if (ctrls.Items[i].isSelected) {
                             result.push(ctrls.Items[i]);
                         }
                     }
@@ -113,15 +156,19 @@ angular.module('ng-keybord-select', [])
                             } else if (e.shiftKey) {
                                 ctrls.mulitSelectItem(item);
                             } else {
-                                ctrls.selectSingleItem(item);
+                                ctrls.selectSingleItem(item, e);
                             }
-                            result = getSelectedItems();
-                            if (ctrls.gridGroupData) {
-                                ctrls.gridGroupData = result;
-                            }
+                            result = getSelectedItems()
+                            scope.$emit('selectItem', result)
+
                         });
                     })
+                    ele.on('mousedown', function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                    })
                 }
+
             }
         }
     }])
