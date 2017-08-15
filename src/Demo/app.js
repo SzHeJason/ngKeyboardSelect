@@ -1,6 +1,6 @@
  angular.module('test', ['ng-keybord-select'])
      .controller('TestCtrl', function($scope, $filter, $log) {
-         console.log("test haha Controller");
+         console.log("test 没毛病 Controller");
          var vm = this;
          vm.selectedData = []
          vm.data = [{
