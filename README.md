@@ -1,4 +1,4 @@
-# ng-keybord-select
+# ng-keyboard-select
 The angular directive can be used to select(mulitselect) item  by 'ctrl' and 'shfit' （使用指令完成系统常见的选择功能,例如ctrl多选，shfit批量选择的功能）
 
 ### Demo
@@ -13,7 +13,7 @@ ________
 ### Bower
 --------
 ```
-    bower install --save-dev ng-keybord-select
+    bower install --save-dev ng-keyboard-select
 ```
 
 ### Usage

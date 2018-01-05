@@ -1,21 +1,21 @@
 {
-  "name": "ng-keybord-select",
+  "name": "ng-keyboard-select",
   "version": "1.0.0",
   "description": "this is angular directive ,help you use 'ctrl' and 'shfit' to select(mulitselect) item",
-  "main": "index.js",
+  "main": "./dist/ng-keybord-select.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SzHeJason/ng-keybord-select.git"
+    "url": "git+https://github.com/SzHeJason/ng-keyboard-select.git"
   },
   "author": "heJason",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SzHeJason/ng-keybord-select/issues"
+    "url": "https://github.com/SzHeJason/ng-keyboard-select/issues"
   },
-  "homepage": "https://github.com/SzHeJason/ng-keybord-select#readme",
+  "homepage": "https://github.com/SzHeJason/ng-keyboard-select#readme",
   "devDependencies": {
     "bower": "^1.7.9",
     "gulp": "^3.9.1",

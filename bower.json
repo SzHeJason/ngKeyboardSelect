@@ -1,12 +1,12 @@
 {
-  "name": "ng-keybord-select",
+  "name": "ng-keyboard-select",
   "description": "this is angular directive ,help you use 'ctrl' and 'shfit' to select(mulitselect) item",
   "main": "index.js",
   "authors": [
     "heJason"
   ],
   "license": "ISC",
-  "homepage": "https://github.com/SzHeJason/ng-keybord-select",
+  "homepage": "https://github.com/SzHeJason/ng-keyboard-select",
   "ignore": [
     "**/.*",
     "node_modules",

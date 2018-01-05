@@ -6,7 +6,7 @@ var uglify = require('gulp-uglify');
 //      javascript 压缩
 //===========================
 gulp.task('javascript', function() {
-    return gulp.src('dist/ng-keybord-select.js')
+    return gulp.src('dist/ng-keyboard-select.js')
         .pipe(uglify({
             mangle: false
         }))

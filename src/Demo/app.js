@@ -1,4 +1,4 @@
- angular.module('test', ['ng-keybord-select'])
+ angular.module('test', ['ng-keyboard-select'])
      .controller('TestCtrl', function($scope, $filter, $log) {
          var vm = this;
          vm.selectedData = []

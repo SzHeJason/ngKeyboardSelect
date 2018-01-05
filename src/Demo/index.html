@@ -8,9 +8,12 @@
         .active {
             border: 1px solid #3934f8;
         }
+        ul{
+            user-select: none;
+        }
     </style>
     <script src="../lib/angular/angular.min.js"></script>
-    <script src="../js/ng-keybord-select.js"></script>
+    <script src="../js/ng-keyboard-select.js"></script>
     <script src="app.js"></script>
 </head>
 
@@ -37,7 +40,7 @@
             {{vm.checkBoxData |json}}
         </pre>
 
-        <h3 ng-init="vm.isCheck = false">如何获取选中的数据？</h3>
+        <h3>如何获取选中的数据？</h3>
         <ul grid-group grid-group-data="vm.selectedData" grid-select-name="isSelected">
             <li>
                 <input grid-check-all ng-model="vm.isCheck" type="checkbox">全选(select-all)
