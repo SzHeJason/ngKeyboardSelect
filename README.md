@@ -16,6 +16,11 @@ ________
     bower install --save-dev ng-keyboard-select
 ```
 
+### npm
+```
+    npm install --save-dev ng-keyboard-select
+```
+
 ### Usage
 -------
 ```html
